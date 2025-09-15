@@ -1,3 +1,5 @@
+Link - https://www.learnwithgoms.com/2025/07/10-business-central-development.html
+
 Task:
 
 Add an expense table to track office expenditures with list and card pages for easy data entry. 

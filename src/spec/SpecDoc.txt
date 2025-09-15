@@ -1,0 +1,33 @@
+Task:
+
+Add an expense table to track office expenditures with list and card pages for easy data entry. 
+Implement validation logic — for example, prevent saving an entry if the amount exceeds 10,000 without manager approval.
+Skills covered: Data validation, field triggers, workflow basics.
+
+-Create new table called Expences.
+-Add fields to it:
+General Information
+
+No - Code
+Employee/Submitter Name - Text
+Employee ID / Department / Cost Center - Code
+Date of Submission - Date
+Manager/Supervisor Approval (signature/field) - Code - TableRelation to the Users page.
+Expense Details (line level) - Text
+Date of Expense - DateTime
+Expense Category/Type (e.g., travel, meals, office supplies, accommodation, mileage, training, entertainment) - Enum or Option type
+Description / Purpose (what was purchased and why) - Text 
+Project / Client / Job Code (if applicable for billing or cost allocation) - Code
+Location (city/country, if travel-related) - Text
+Amount (before tax) - Decimal
+Tax / VAT amount- - Decimal
+Total Amount (incl. tax) - Decimal
+Currency - TabeRelation to the Currency table
+Payment & Supporting Info - Payment type table relation
+Payment Method (cash, credit card, company card, reimbursement) - Payment type
+Receipt Attached (Yes/No) - Option/Boolean
+Invoice / Receipt Number - Code/text
+Mileage (if relevant) – distance, rate per km/mile, total calculated amount - integer
+Approval & Processing - THink about approval process if the requested amount is more then 10k
+Manager Approval (signature/checkbox/date) - checkbox - boolean
+Payment Status (pending, approved, reimbursed) - workflow Approval process

@@ -9,7 +9,6 @@ table 50600 Expences
         {
             Caption = 'No';
             //Editable = false;
-            TableRelation = "No. Series";
         }
         field(2; Submitter; Text[30])
         {

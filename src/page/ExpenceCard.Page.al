@@ -49,6 +49,17 @@ page 50601 ExpencesList
                 field(No; Rec.No)
                 {
                     ToolTip = 'Specifies the value of the No field.', Comment = '%';
+                    trigger OnAssistEdit()
+                    var
+                        NoSeriesMgt: Codeunit "No. Series";
+                        NoSeriesRec: Record "No. Series";
+                        NoSeriesLine: Record "No. Series Line";
+                        ResetFilters: boolean;
+                    begin
+                        if NoSeriesRec.Get('EXP') then
+                            if NoSeriesMgt.SelectCurrentNoSeriesLine(NoSeriesRec, NoSeriesLine, ResetFilters) then
+                                CurrPage.Update();
+                    end;
                 }
                 field("Payment Status"; Rec."Payment Status")
                 {
@@ -82,7 +93,7 @@ page 50601 ExpencesList
         }
     }
 
-    trigger OnInit()
+    trigger OnOpenPage()
     var
         NoSeriesMgt: Codeunit "No. Series";
         SalesSetup: Record "Sales & Receivables Setup";
@@ -90,7 +101,8 @@ page 50601 ExpencesList
         if Rec.No = '' then begin
             SalesSetup.Get();
             SalesSetup.TestField("Expences Nos");  // Validates number series exists
-            Rec.No := 
+            Rec.No := NoSeriesMgt.GetNextNo(SalesSetup."Expences Nos", WorkDate());
+
         end;
 
 

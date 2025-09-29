@@ -13,7 +13,15 @@ page 50601 ExpencesList
             group(General)
             {
                 Caption = 'General';
-
+                field(No; Rec.No)
+                {
+                    ToolTip = 'Specifies the value of the No field.', Comment = '%';
+                    trigger OnAssistEdit()
+                    begin
+                        if Rec.AssistEdit() then
+                            CurrPage.Update();
+                    end;
+                }
                 field(Amount; Rec.Amount)
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
@@ -46,21 +54,7 @@ page 50601 ExpencesList
                 {
                     ToolTip = 'Specifies the value of the Expense Details field.', Comment = '%';
                 }
-                field(No; Rec.No)
-                {
-                    ToolTip = 'Specifies the value of the No field.', Comment = '%';
-                    trigger OnAssistEdit()
-                    var
-                        NoSeriesMgt: Codeunit "No. Series";
-                        NoSeriesRec: Record "No. Series";
-                        NoSeriesLine: Record "No. Series Line";
-                        ResetFilters: boolean;
-                    begin
-                        if NoSeriesRec.Get('EXP') then
-                            if NoSeriesMgt.SelectCurrentNoSeriesLine(NoSeriesRec, NoSeriesLine, ResetFilters) then
-                                CurrPage.Update();
-                    end;
-                }
+
                 field("Payment Status"; Rec."Payment Status")
                 {
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
@@ -93,7 +87,8 @@ page 50601 ExpencesList
         }
     }
 
-    trigger OnOpenPage()
+
+    trigger OnNewRecord(BelowxRec: Boolean)
     var
         NoSeriesMgt: Codeunit "No. Series";
         SalesSetup: Record "Sales & Receivables Setup";
@@ -101,10 +96,11 @@ page 50601 ExpencesList
         if Rec.No = '' then begin
             SalesSetup.Get();
             SalesSetup.TestField("Expences Nos");  // Validates number series exists
-            Rec.No := NoSeriesMgt.GetNextNo(SalesSetup."Expences Nos", WorkDate());
+            Rec.No := NoSeriesMgt.GetNextNo(SalesSetup."Expences Nos");
+            Rec.Insert();
+            //CurrPage.Update();
 
         end;
-
 
     end;
 

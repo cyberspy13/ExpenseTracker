@@ -9,6 +9,7 @@ table 50600 Expences
         {
             Caption = 'No';
             //Editable = false;
+
         }
         field(2; Submitter; Text[30])
         {
@@ -81,4 +82,24 @@ table 50600 Expences
             Clustered = true;
         }
     }
+    procedure AssistEdit() Result: Boolean
+    var
+        ExpenseRec: Record Expences;
+        SalesSetup: Record "Sales & Receivables Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        NoSeriesRecord: Record "No. Series";
+        NoSeriesLine: Record "No. Series Line";
+        ResetFilters: Boolean;
+        NoSeriesPage: Page "No. Series";
+    begin
+        SalesSetup.Get();
+        SalesSetup.TestField("Expences Nos");
+        if SalesSetup."Expences Nos" <> '' then begin
+            NoSeriesRecord.SetRange(Code, SalesSetup."Expences Nos");
+            NoSeriesRecord.Modify(true);
+            if NoSeriesRecord.FindFirst() then
+                NoSeriesPage.RunModal();
+        end;
+    end;
+
 }

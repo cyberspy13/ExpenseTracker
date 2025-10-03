@@ -18,7 +18,7 @@ page 50601 ExpencesList
                     ToolTip = 'Specifies the value of the No field.', Comment = '%';
                     trigger OnAssistEdit()
                     begin
-                        if Rec.AssistEdit() then
+                        if Rec.AssistEdit(xRec) then
                             CurrPage.Update();
                     end;
                 }
@@ -97,11 +97,9 @@ page 50601 ExpencesList
             SalesSetup.Get();
             SalesSetup.TestField("Expences Nos");  // Validates number series exists
             Rec.No := NoSeriesMgt.GetNextNo(SalesSetup."Expences Nos");
-            Rec.Insert();
             //CurrPage.Update();
 
         end;
-
     end;
 
 

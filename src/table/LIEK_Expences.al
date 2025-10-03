@@ -82,24 +82,21 @@ table 50600 Expences
             Clustered = true;
         }
     }
-    procedure AssistEdit() Result: Boolean
+    procedure AssistEdit(OldExpences: Record Expences) Result: Boolean
     var
-        ExpenseRec: Record Expences;
         SalesSetup: Record "Sales & Receivables Setup";
         NoSeriesMgt: Codeunit "No. Series";
-        NoSeriesRecord: Record "No. Series";
-        NoSeriesLine: Record "No. Series Line";
-        ResetFilters: Boolean;
-        NoSeriesPage: Page "No. Series";
+        Expences: Record Expences;
     begin
         SalesSetup.Get();
         SalesSetup.TestField("Expences Nos");
-        if SalesSetup."Expences Nos" <> '' then begin
-            NoSeriesRecord.SetRange(Code, SalesSetup."Expences Nos");
-            NoSeriesRecord.Modify(true);
-            if NoSeriesRecord.FindFirst() then
-                NoSeriesPage.RunModal();
+
+        if NoSeriesMgt.LookupRelatedNoSeries(SalesSetup."Expences Nos", OldExpences.No, Expences.No) then begin
+            Expences.No := NoSeriesMgt.GetNextNo(Expences.No);
+            Rec := Expences;
+            exit(true);
         end;
+        exit(false);
     end;
 
 }

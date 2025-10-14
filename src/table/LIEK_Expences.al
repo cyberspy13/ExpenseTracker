@@ -18,6 +18,7 @@ table 50600 Expences
         field(3; "Employee ID"; Code[20])
         {
             Caption = 'Employee ID';
+            TableRelation = Employee."No.";
         }
         field(4; "Date of Submission"; Date)
         {
@@ -27,7 +28,7 @@ table 50600 Expences
         {
             Caption = 'Supervisor Approval';
         }
-        field(6; "Expense Details"; Text[100])
+        field(6; "Expense Details"; Text[200])
         {
             Caption = 'Expense Details';
         }
@@ -35,9 +36,10 @@ table 50600 Expences
         {
             Caption = 'Date of Expense';
         }
-        field(8; "Expense Category Type"; Enum "ABS Blob Access Tier")
+        field(8; "Expense Category Type"; Option)
         {
             Caption = 'Expense Category Type';
+            OptionMembers = Business,Leisure,Holiday;
         }
         field(9; Amount; Decimal)
         {
@@ -60,26 +62,29 @@ table 50600 Expences
         {
             Caption = 'Payment type';
             TableRelation = "Payment Method";
-            ;
         }
         field(14; "Receipt Attached"; Boolean)
         {
             Caption = 'Receipt Attached';
         }
-        field(15; "Approval Status"; Enum "ABS Blob Access Tier")
+        field(15; "Approval Status"; Enum "LIEK_ExpencesApprovalStatus")
         {
             Caption = 'Approval Status';
         }
-        field(16; "Payment Status"; Enum "Approval Status")
+        field(16; "Payment Status"; Enum "LIEK_ExpPaymApprovalStatus")
         {
             Caption = 'Payment Status';
         }
     }
     keys
     {
-        key(PK; No, "Employee ID")
+        key(PK; No)
         {
             Clustered = true;
+        }
+        key(FK; "Employee ID")
+        {
+
         }
     }
     procedure AssistEdit(OldExpences: Record Expences) Result: Boolean
